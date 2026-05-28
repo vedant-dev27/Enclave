@@ -1,15 +1,21 @@
+import 'package:enclave/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
-void main(){
-  runApp(VaultisApp());
+void main() {
+  runApp(const EnclaveApp());
 }
 
-class VaultisApp extends StatelessWidget{
-  const VaultisApp({super.key});
+class EnclaveApp extends StatelessWidget {
+  const EnclaveApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp();
-
+    return MaterialApp(
+      themeMode: ThemeMode.system,
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      debugShowCheckedModeBanner: false,
+      home: HomeScreen(),
+    );
   }
 }
