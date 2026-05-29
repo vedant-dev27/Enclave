@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:kdbx/kdbx.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'dart:io';
 import 'package:enclave/screens/home_screen.dart';
 
 class MasterPwdScreen extends StatefulWidget {
@@ -9,7 +12,7 @@ class MasterPwdScreen extends StatefulWidget {
 }
 
 class _MasterPwdScreenState extends State<MasterPwdScreen> {
-  final String pwd = "123456";
+  final dbPath = "/storage/emulated/0/Vault/t";
   final TextEditingController _controller = TextEditingController();
 
   @override
@@ -31,15 +34,33 @@ class _MasterPwdScreenState extends State<MasterPwdScreen> {
             ),
           ),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
+              final navigator = Navigator.of(context);
+              final messenger = ScaffoldMessenger.of(context);
               String masterPassword = _controller.text;
-              if (masterPassword == pwd) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const HomeScreen(),
-                  ),
-                );
+              final status = await Permission.manageExternalStorage.request();
+              if (status.isGranted) {
+                try {
+                  final bytes = await File(dbPath).readAsBytes();
+                  final file = await KdbxFormat().read(
+                    bytes,
+                    Credentials(
+                      ProtectedValue.fromString(masterPassword),
+                    ),
+                  );
+
+                  navigator.pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => HomeScreen(kdbxFile: file),
+                    ),
+                  );
+                } catch (e) {
+                  messenger.showSnackBar(
+                    const SnackBar(
+                      content: Text("Error opening database"),
+                    ),
+                  );
+                }
               }
             },
             child: const Text("Submit"),
