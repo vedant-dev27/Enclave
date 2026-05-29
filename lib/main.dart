@@ -1,5 +1,6 @@
-import 'package:enclave/screens/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:enclave/screens/home_screen.dart';
+import 'package:enclave/screens/master_pwd_screen.dart';
 
 void main() {
   runApp(const EnclaveApp());
@@ -15,7 +16,7 @@ class EnclaveApp extends StatelessWidget {
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
+      home: MasterPwdScreen(),
     );
   }
 }
