@@ -46,12 +46,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   KdbxKeyCommon.PASSWORD,
                 )
                 ?.getText(),
-
-            url: entry
-                .getString(
-                  KdbxKeyCommon.URL,
-                )
-                ?.getText(),
           ),
         )
         .toList();
